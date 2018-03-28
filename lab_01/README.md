@@ -59,3 +59,4 @@ Test first ssh into an ec2 image
 
 ## 9) git stuff
 
+Useful [global configs](https://github.com/lorandszakacs/config/blob/master/git/.gitconfig) to put in `~/.gitconfig`. Aliases are by far the best part of it.
