@@ -1,8 +1,0 @@
-Name, email, phone, gitHubId, skypeId
-
-Mentors:
-Mihai Simu, mihai.simu@busymachines.com, 0722558444, mihaiSimu, simu.mihai.stelian@gmail.com 
-
-
-
-
