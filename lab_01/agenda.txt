@@ -22,5 +22,15 @@ sbt -version # will take some time first time around
 
 6) Install docker
 
+7) Install Intellij
+
+Test first scala project to see it works
+
+8) Create AWS account + MFA
+
+Test first ssh into an ec2 image
+
+
+
 
 
