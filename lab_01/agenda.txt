@@ -30,7 +30,5 @@ Test first scala project to see it works
 
 Test first ssh into an ec2 image
 
-
-
-
+9) git stuff
 
