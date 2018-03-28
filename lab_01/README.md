@@ -67,7 +67,7 @@ Useful [global configs](https://github.com/lorandszakacs/config/blob/master/git/
 
 Install [tldr](http://tldr.sh/). Useful
 ```
-Ⓐ ★ ☭ tldr docker
+Ⓐ ★ tldr docker
 Local data is older than two weeks, use --update to update it.
 
 
