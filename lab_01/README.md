@@ -62,3 +62,40 @@ Test first ssh into an ec2 image
 ## 9) git stuff
 
 Useful [global configs](https://github.com/lorandszakacs/config/blob/master/git/.gitconfig) to put in `~/.gitconfig`. Aliases are by far the best part of it.
+
+## 10) tldr — easier man pages
+
+Install [tldr](http://tldr.sh/). Useful
+```
+Ⓐ ★ ☭ tldr docker
+Local data is older than two weeks, use --update to update it.
+
+
+docker
+
+Manage Docker containers and images.
+
+- List currently running docker containers:
+    docker container ls
+
+- List all docker containers (running and stopped):
+    docker container ls -a
+
+- Start a container:
+    docker container start container
+
+- Stop a container:
+    docker container stop container
+
+- Start a container from an image and get a shell inside of it:
+    docker container run -it image bash
+
+- Run a command inside of an already running container:
+    docker container exec container command
+
+- Remove a stopped container:
+    docker container rm container
+
+- Fetch and follow the logs of a container:
+    docker container logs -f container
+```
