@@ -45,6 +45,8 @@ sbt new scala/scala-seed.g8
 
 Do not skip `Step 2` even though it is marked as "optional". It is highly crucial for a pleasant user experience with docker.
 
+On [MacOS](https://docs.docker.com/docker-for-mac/install/#download-docker-for-mac)
+
 ## 7) Install Intellij
 
 Download the (free) community build:
