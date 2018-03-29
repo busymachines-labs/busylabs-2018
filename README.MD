@@ -8,4 +8,5 @@
 | Lorand Szakacs    | lorand.szakacs@busymachines.com     | _             | lorandszakacs |  _                             |
 | Alexandru Stana   | alexandru.stana@busymachines.com    | _             | alexandrustana|  _                             |
 | Dan Vidican       | dan.vidican@busymachines.com        | _             | danvidican    |  _                             |
-| Ioan Georgiu (Ion)| ioan.georgiu@busymachines.com       | _             | manufacturist |  _                             |
+| Ioan Georgiu (Ion)| ioan.georgiu@busymachines.com       | _             | manufacturist |  _    
+| Andra Cimpian-Ille| andra.cimpian-ille@busymachines.com | -             | AndraCimpian  |  -                             |
