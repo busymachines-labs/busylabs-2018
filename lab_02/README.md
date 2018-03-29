@@ -10,7 +10,9 @@ N.B. the book says that you can use "Scala IDE" (which is Eclipse based), becaus
 
 ## Read code
 
-You have not learned Scala until you actually read code. There are infinitely more ways to write complete and utter shit Scala code, but few ways to write good code. Therefore try looking for the best examples. Some are inhouse:
+You have not learned Scala until you actually read code. This is a skill that you will continuously develop during the entire lab, and hopefully afterwards as well. I put this section here for future reference mostly, but each of us have different writing styles and maybe a book is too boring.
+
+There are infinitely more ways to write complete and utter shit Scala code, but few ways to write good code. Therefore try looking for the best examples. Some are inhouse:
 1. [busymachines-commons](https://github.com/busymachines/busymachines-commons)
 2. [avalon-server](https://bitbucket.org/busymerlin/avalon-server) — uses `busymachines-commons` extensively. But is slightly different in style than what we'll be doing. But it's still a good place to learn to read code. Hosted on bitbucket mostly because it was sort-of a side project. The server which is actually online @ [http://94.130.140.123:9012/avalon/graphiql.html](http://94.130.140.123:9012/avalon/graphiql.html). It's an implementation of the "Avalon" board game.
 
