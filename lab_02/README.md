@@ -19,6 +19,10 @@ There are infinitely more ways to write complete and utter shit Scala code, but 
 Others are open-source community projects:
 1. Basically everything [typelevel](https://github.com/typelevel)
 
+## Practice
+
+47degrees offers a set of exercises gathered from multiple sources which may help you increase your Scala know-how [Scala Exercises](https://www.scala-exercises.org/)
+
 ## Email and slack
 
 Don't forget to ask questions by email or on slack [busy-labs-2018.slack.com](busy-labs-2018.slack.com)!
