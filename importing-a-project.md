@@ -1,6 +1,6 @@
 # Importing an SBT project into IntelliJ
 
-SBT is the single source of truth for your scala projects. End of story. If you can't do it from SBT, it's wrong.
+`SBT is the single source of truth for your scala projects. End of story. If you can't do it from SBT, it's wrong.`
 
 Starting from the above maxim, we need an IDE to just dumbly interpret the already painstakingly defined SBT build, and just work. IntelliJ is — unfortunately — one of the *better* options out there. But it has some seriously annoying quirks that can totally block your workflow. So here's a step-by-step guide on how to deal with IntelliJ.
 
@@ -52,7 +52,7 @@ Click `Finish`.
 
 ### 4 — Set Project Structure
 
-Tou get back to the familiar 'Project Structure' dialog which ought to look like:
+You get back to the familiar 'Project Structure' dialog which ought to look like:
 
 ![Landing Project Structure](./screenshots/intellij_04_01.png)
 
@@ -62,7 +62,9 @@ Don't worry, everything's easily fixed. Set the values like so, and then make su
 
 ### 5 — Import SBT project — `Modules` tab
 
-ALWAYS import, never create.
+From the same window, choose the `Modules` tab on the right hand side.
+
+Then go click on that `+` and select the `Import Module`. ALWAYS import, never create.
 
 ![Modules — import it](./screenshots/intellij_05_01.png)
 
@@ -70,7 +72,7 @@ Navigate to the root folder of the git repo, and select it.
 
 ![Git root](./screenshots/intellij_05_02.png)
 
-You will be immediately redirected to the following screen. Select everything as such. If these options are greyed out to you it means that you did not actually select the root (the same folder which contains the `build.sbt` file) of the git repo, or you missed some of the earlier steps. Rollback, try again!
+You will be immediately redirected to the following screen. Select sbt as you see here. If these options are greyed out to you it means that you did not actually select the root (the same folder which contains the `build.sbt` file) of the git repo, or you missed some of the earlier steps. Rollback, try again!
 
 ![Import from external module](./screenshots/intellij_05_03.png)
 
@@ -84,7 +86,7 @@ Just hit OK at this point. Nothing to change here.
 
 Wait for the import to actually finish, see progress bar (that either 0% or 100%) at bottom of screen:
 
-![Real fake progress-bar](./screenshots/intellij_05_05.png)
+![Real fake progress-bar](./screenshots/intellij_05_06.png)
 
 ### 6 — If something needs changing, go SBT
 
