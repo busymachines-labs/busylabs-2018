@@ -4,8 +4,6 @@ import busymachines.core._
 import busymachines.effects._
 //see http://busymachines.github.io/busymachines-commons/docs/effects.html#validated
 //TODO: accumulate the errors instead of having fail first semantics
-import busymachines.effects.validated._
-import cats.implicits._
 
 object UserService {
 
@@ -62,8 +60,8 @@ object UserService {
             Result.fail(ConflictFailure(s"Email: $em is already registered to a different user"))
           else Result.unit // == Some(())
       user = User(email = em, pwd = pw, ur)
-      _    = createUser(user)
-      _    = sendEmailToUser(user)
+      _ <- Result(createUser(user))
+      _ <- Result(sendEmailToUser(user))
     } yield user
 //    Password(plainTextPw).flatMap { pw: Password =>
 //      Email(email).asResult(InvalidInputFailure(s"Email was invalid: $email")).flatMap { em =>
