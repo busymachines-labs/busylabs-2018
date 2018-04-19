@@ -53,6 +53,11 @@ def commonsSettings: Seq[Setting[_]] = Seq(
     //doobie
     doobieHikari,
     doobiePostgres,
+    //logging
+    scalaLogging,
+    logbackClassic,
+    //email
+    javaxMail,
     //test stuff
     scalaTest,
     scalaCheck,
@@ -237,6 +242,21 @@ lazy val akkaHttpCirceIntegration: ModuleID = "de.heikoseeberger" %% "akka-http-
 
 lazy val akkaTK:     ModuleID = "com.typesafe.akka" %% "akka-testkit"      % akkaVersion     % Test withSources ()
 lazy val akkaHttpTK: ModuleID = "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test withSources ()
+
+//============================================================================================
+//=========================================  logging =========================================
+//============================================================================================
+
+lazy val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2" withSources ()
+//this is a Java library, notice that we used one single % instead of %%
+lazy val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.2.3" withSources ()
+
+//============================================================================================
+//==========================================  email ==========================================
+//============================================================================================
+
+//this is a Java library, notice that we used one single % instead of %%
+lazy val javaxMail = "com.sun.mail" % "javax.mail" % "1.6.1" withSources ()
 
 //============================================================================================
 //=========================================  testing =========================================
