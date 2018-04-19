@@ -1,4 +1,6 @@
 import sbt._
+import sbtassembly.MergeStrategy
+import sbtassembly.PathList
 
 lazy val root =
   Project(id = "busylabs", base = file("."))
@@ -13,15 +15,19 @@ lazy val root =
 //equivalent to: Project(id = "lab_02", base = file("./lab_02"))
 lazy val lab_02 = project
   .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
 
 lazy val lab_03 = project
   .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
 
 lazy val lab_04 = project
   .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
 
 lazy val lab_05 = project
   .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
 
 def commonsSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.5",
@@ -106,6 +112,22 @@ def commonsSettings: Seq[Setting[_]] = Seq(
   dependencyOverrides += "org.typelevel" %% "cats-core"   % "1.1.0",
   dependencyOverrides += "org.typelevel" %% "cats-effect" % "0.10.1"
 )
+
+def sbtAssemblySettings: Seq[Setting[_]] = {
+  baseAssemblySettings ++
+    Seq(
+      // Skip tests during while running the assembly task
+      test in assembly := {},
+      assemblyMergeStrategy in assembly := {
+        case PathList("application.conf", _ @_*) => MergeStrategy.concat
+        case "application.conf" => MergeStrategy.concat
+        case x                  => (assemblyMergeStrategy in assembly).value(x)
+      },
+      //this is to avoid propagation of the assembly task to all subprojects.
+      //changing this makes assembly incredibly slow
+      aggregate in assembly := false
+    )
+}
 
 /**
   * tpolecat's glorious compile flag list:
