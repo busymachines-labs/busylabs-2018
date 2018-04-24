@@ -99,3 +99,5 @@ Manage Docker containers and images.
 - Fetch and follow the logs of a container:
     docker container logs -f container
 ```
+
+## Detailed guide on how to deal with IntelliJ
