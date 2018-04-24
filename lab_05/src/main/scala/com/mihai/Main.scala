@@ -2,11 +2,8 @@ package com.mihai
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
-import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import com.mihai.api.UserApi
-import com.mihai.mockdatabase.Database
 
 import scala.io.StdIn
 
@@ -16,10 +13,10 @@ object Main extends App with UserApi {
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
+  busymachines.rest.HttpServer
+
 
   val bindingFuture = Http().bindAndHandle(userRoute, "localhost", 8081)
-
-
 
   println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
   StdIn.readLine() // let it run until user presses return
