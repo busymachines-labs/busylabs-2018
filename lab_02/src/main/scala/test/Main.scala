@@ -6,30 +6,7 @@ import busymachines.effects._
 //TODO: accumulate the errors instead of having fail first semantics
 
 object UserService {
-
-  //this is just stuff about covariance(+) and contravariance(-)
-//  class Box[-T, +R] {
-//    def v(t: T): R = ???
-//  }
-//
-//  class UserRightsBox extends Box[UserRight, IAmBecomeDeath.type] {
-//    override def v(t: UserRight): IAmBecomeDeath.type = ???
-//  }
-//
-//  val box1 = new UserRightsBox //new Box[Regular.type, UserRight]
-//  //100 lines of code
-//  val value = box1.v(Regular)
-  //value
-
-//  val box2 = new Box[UserRight, IAmBecomeDeath.type]
-//  box2.v(Regular)
-
-//  val boxRegular: Box[Regular.type] = Box[Regular.type](Regular)
-
-//  val x: Box[Regular.type] = Box[UserRight](IAmBecomeDeath)
-
-//  val r: Result[UserRight] = Result[Regular.type](Regular)
-
+  
   //writes to Database
   def createUser(u: User): Unit = println(
     s"created User: $u"
@@ -53,32 +30,32 @@ object UserService {
     right:       String
   ): Result[User] = {
     for {
-      pw <- (Password(plainTextPw): Result[Password])
-      em <- Email(email).asResult(InvalidInputFailure(s"Email was invalid: $email"))
-      ur <- UserRight.fromName(right)
+      pw <- Password(plainTextPw)
+      em <- Email(email)
+      ur <- UserRole.fromName(right)
       _ <- if (doesEmailExist(em))
             Result.fail(ConflictFailure(s"Email: $em is already registered to a different user"))
-          else Result.unit // == Some(())
+          else Result.unit
       user = User(email = em, pwd = pw, ur)
       _ <- Result(createUser(user))
       _ <- Result(sendEmailToUser(user))
     } yield user
-//    Password(plainTextPw).flatMap { pw: Password =>
-//      Email(email).asResult(InvalidInputFailure(s"Email was invalid: $email")).flatMap { em =>
-//        UserRight.fromName(right).flatMap { ur =>
-//          val eff =
-//            if (doesEmailExist(em))
-//              Result.fail(ConflictFailure(s"Email: $em is already registered to a different user"))
-//            else Result.unit // == Some(())
-//          eff.map { _ =>
-//            val user = User(em, pw, ur)
-//            createUser(user)
-//            sendEmailToUser(user)
-//            user
-//          }
-//        }
-//      }
-//    }
+    //    the desugared version of the above is roughly:
+    //    Password(plainTextPw).flatMap { pw: Password =>
+    //      Email(email).flatMap { em =>
+    //        UserRight.fromName(right).flatMap { ur =>
+    //          val eff =
+    //            if (doesEmailExist(em))
+    //              Result.fail(ConflictFailure(s"Email: $em is already registered to a different user"))
+    //            else Result.unit // == Some(())
+    //          val user = User(em, pw, ur)
+    //          createUser.flatMap {_ =>
+    //            sendEmailToUser(user)
+    //              .map(_ => user)
+    //          }
+    //        }
+    //      }
+    //    }
   }
 }
 
