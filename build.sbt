@@ -30,7 +30,7 @@ lazy val lab_05 = project
   .settings(sbtAssemblySettings)
 
 def commonsSettings: Seq[Setting[_]] = Seq(
-  scalaVersion := "2.12.5",
+  scalaVersion := "2.12.6",
   libraryDependencies ++= Seq(
     //utils
     bmcCore,
