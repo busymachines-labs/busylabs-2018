@@ -174,6 +174,13 @@ To learn about how to use `Future`s check out the [official documentation](https
 
 You can use `cats.effect.IO` as an alternative to `Future`, but it can work as such with quite a lot of manual scheduling, but `monix.eval.Task` is a better fit because it was designed and optimized for concurrency and parallelism. All three effects are available through a `busymachines.effects._` import. And `Task` is easily convertable to a future through a `task.runAsync()`, or `task.asFutureUnsafe()`(available only w/ the `busymachines.effects._` import)
 
+## Conclusion
+
+Basically, for most of our applications we will need only 3 effects:
+- `Option` — used to model absence of value
+- `Result/Try` — used to model "failure"
+- `Task` (with the ocasional transforming it to a future if there's legacy code involved) — used to suspend side-effects and handle concurrency
+
 ## What is to be done?
 
 Take inspiration from lab_02, and lab_05 and create an interface that can support the following things:
