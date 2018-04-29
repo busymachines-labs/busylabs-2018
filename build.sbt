@@ -9,7 +9,8 @@ lazy val root =
       lab_02,
       lab_03,
       lab_04,
-      lab_05
+      lab_05,
+      lab_06
     )
 
 //equivalent to: Project(id = "lab_02", base = file("./lab_02"))
@@ -26,6 +27,10 @@ lazy val lab_04 = project
   .settings(sbtAssemblySettings)
 
 lazy val lab_05 = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
+
+lazy val lab_06 = project
   .settings(commonsSettings)
   .settings(sbtAssemblySettings)
 
