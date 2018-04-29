@@ -188,8 +188,9 @@ Take inspiration from lab_02, and lab_05 and create an interface that can suppor
 - persist said users (in memory is fine), but only if they have 100% valid data (for reasonable definitions of "valid")
 - have a minimal definition of a ``"session"` for a given `User`, a way to create it iff the `User` can prove their identity, and identify a user by a `session`
 - a `User` should be able to update their details [iff](https://en.wikipedia.org/wiki/If_and_only_if) they can prove to have a valid session for said users
+- it has tot be thread-safe
 - do it the pure FP way, no compromise
-- make sure that the rationale of your design/
+- make sure that the rationale of your design is clearly stated
 
 How to go about it:
 - create a [fork](https://help.github.com/articles/fork-a-repo/) of the `busylabs` repository
