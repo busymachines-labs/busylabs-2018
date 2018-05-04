@@ -27,7 +27,7 @@ object Password {
 }
 
 object ImpurePWCreation {
-  //remember the talk about special language features? Well, that shit is does
+  //remember the talk about special language features? Well, that shit does
   //not come without many, many problems of its own.
   val pw = Password("12345")
 
