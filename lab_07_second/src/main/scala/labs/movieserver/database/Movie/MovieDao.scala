@@ -12,8 +12,8 @@ trait MovieDao {
 
   def addMovie(movie: MovieWithoutId): Future[String]
 
-  def deleteMovie(id: String): Future[String]
+  def deleteMovie(movieId: String): Future[String]
 
-  def updateMovie(id: String, movie: MovieWithoutId): Future[String]
+  def updateMovie(movieId: String, movie: MovieWithoutId): Future[String]
 
 }

@@ -6,6 +6,8 @@ case class MovieWithoutId(title: String, year: Int, rating: Double)
 
 case class MovieNotFoundException(movieId: String) extends Exception(s"Not found movie with Id ${movieId}")
 
+case class RequestFailed() extends Exception("Request failed!")
+
 
 
 case class User(id: String, name: String, email: String )
