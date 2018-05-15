@@ -6,7 +6,7 @@ import com.sksamuel.elastic4s.http.ElasticDsl._
 import com.sksamuel.elastic4s.http.ElasticDsl
 import com.sksamuel.elastic4s.http.HttpClient
 import com.sksamuel.elastic4s.http.HttpExecutable
-import labs.movieserver.datamodel.{Movie, MovieQuote, MovieQuoteWithoutId}
+import labs.movieserver.datamodel._
 import spray.json.RootJsonFormat
 
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -36,7 +36,17 @@ class MovieQuoteElasticSearchDao(elasticClient: HttpClient, indexName: String)(i
   } yield quoteId
 
 
-  override def getMovieQuote(quote: String): Future[MovieQuote] = ???
+  override def getMovieQuote(quote: String): Future[MovieQuote] =
+    for {
+      result <- elasticClient.execute {
+        search(indexName) query matchAllQuery() postFilter termQuery("quote", quote)
+      }
+
+      response = result.getOrElse(throw RequestFailed())
+      _ = if(response.result.isSourceEmpty || !response.result.exists) throw MovieQuoteNotFoundException(movieId)
+      quote = response.result.sourceAsString.parseJson.convertTo[MovieQuote]
+
+  } yield quote
 
   override def deleteMovieQuote(quoteId: String): Future[String] = ???
 
