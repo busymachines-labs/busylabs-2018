@@ -1,11 +1,13 @@
 package labs.movieserver.database.Movie
 
-import com.sksamuel.elastic4s.ElasticsearchClientUri
 import com.sksamuel.elastic4s.analyzers.StopAnalyzer
 import com.sksamuel.elastic4s.http.ElasticDsl._
 import com.sksamuel.elastic4s.http.get.GetResponse
-import com.sksamuel.elastic4s.http.{ElasticDsl, HttpClient, RequestFailure, RequestSuccess}
+import com.sksamuel.elastic4s.http.{HttpClient}
+//import com.sksamuel.elastic4s.http.ElasticDsl
+import com.sksamuel.elastic4s.ElasticsearchClientUri
 
+import com.sksamuel.elastic4s.http.HttpExecutable
 import scala.util.Random
 //import labs.movieserver.datamodel.{MovieWithoutId}
 import labs.movieserver.datamodel._
@@ -18,17 +20,14 @@ import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future, _}
 
 
-class MovieElasticsearchDao(implicit val ex: ExecutionContext) extends MovieDao {
+class MovieElasticsearchDao(elasticClient: HttpClient, indexName: String)(implicit val ex: ExecutionContext) extends MovieDao {
 
   implicit val movieFormat: RootJsonFormat[MovieWithoutId] = jsonFormat3(MovieWithoutId)
   implicit val movieIdFormat  = jsonFormat4(Movie)
 
-
-  val elasticClient = HttpClient(ElasticsearchClientUri("localhost", 9200))
-  val indexName = "lab_07"
   val typeName: String = "movie"
 
-  Await.result(onStartup, 10 seconds)
+//  Await.result(onStartup, 10 seconds)
 
 
   override def addMovie(movie: MovieWithoutId): Future[String] =
@@ -42,7 +41,7 @@ class MovieElasticsearchDao(implicit val ex: ExecutionContext) extends MovieDao 
 
   override def deleteMovie(movieId: String): Future[String] = for {
     _ <- elasticClient.execute {
-      ElasticDsl.delete(movieId) from (indexName,typeName)
+      delete(movieId) from (indexName,typeName)
     }
   } yield (movieId)
 
@@ -78,22 +77,16 @@ class MovieElasticsearchDao(implicit val ex: ExecutionContext) extends MovieDao 
 
 
 
-  private def onStartup: Future[Unit] =
-    for {
-      indexExists <- elasticClient.execute { indexExists(indexName) }
-      _ <- if (indexExists.isRight) Future.successful(())
-      else elasticClient.execute {
-              createIndex(indexName)
-                .mappings(
-                mapping(typeName) as (
-                  nestedField("id"),
-                  textField("title"),
-                  intField("year"),
-                  doubleField("rating") analyzer StopAnalyzer
-                )
-              )
-           }
-    } yield ()
+//  private def onStartup: Future[Unit] =
+//    for {
+//      _ <- elasticClient.execute{
+//        mapping(typeName)        as (
+//            nestedField("id"),
+//            textField("title"),
+//            intField("year"),
+//            doubleField("rating") analyzer StopAnalyzer
+//        )}
+//    } yield ()
 
 
 
