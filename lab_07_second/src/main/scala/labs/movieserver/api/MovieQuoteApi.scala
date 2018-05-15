@@ -28,21 +28,18 @@ class MovieQuoteApi(quoteDAO: MoviQuoteDao) extends SprayJsonSupport  {
                       complete(quoteDAO.addMovieQuote(newQuote))
                     }
                 }
-//            } ~
-//              path(Segment) { quote =>
-//                  get {
-//                    complete(quoteDAO.getMovieQuote(quote))
-//                  } ~
-//                  put {entity(as[MovieQuoteWithoutId]) { newQuote =>
-//                    complete(quoteDAO.updateMovieQuote(???, newQuote))
-//                  }} ~
-//                  delete {
-//                    complete(quoteDAO.deleteMovieQuote(quote))
-//                  }
-//              }
-//            ~ path(Segment) {
-//
-            }
+            } ~
+              path(Segment) { quote =>
+                  get {
+                    complete(quoteDAO.getMovieQuote(quote))
+                  } ~
+                  put {entity(as[MovieQuoteWithoutId]) { newQuote =>
+                    complete(quoteDAO.updateMovieQuote(???, newQuote))
+                  }} ~
+                  delete {
+                    complete(quoteDAO.deleteMovieQuote(quote))
+                  }
+              }
           }
         }
       }
