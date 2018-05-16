@@ -15,7 +15,7 @@ import labs.simplemovieserver.api.MovieApi
 import com.sksamuel.elastic4s.http.ElasticDsl
 import labs.movieserver.api.MovieQuoteApi
 import akka.http.scaladsl.server.Directives._
-
+import labs.movieserver.migrationService.MovieService
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
@@ -43,13 +43,20 @@ object Main extends App {
 
   val movieDao = new MovieElasticsearchDao(elasticClient, indexName)
   val movieQuotDao = new MovieQuoteElasticSearchDao(elasticClient, indexName)
+  val movieService = new MovieService(movieDao, movieQuotDao)
 
-  val movieApi = new MovieApi(movieDao)
+  val movieApi = new MovieApi(movieDao, movieService)
   val quoteApi = new MovieQuoteApi(movieQuotDao)
+
+
 
   val routes: Route =  movieApi.movieRoute ~ quoteApi.movieQuoteRoute
 
   val bindingFuture = Http().bindAndHandle(routes, host, port)
+
+//  Await.result(for {
+//    movies <- movieService.filterMovies(3)
+//  } yield movies.toList.map( m => println("Ana: " +  m)), 30 seconds)
 
 
 }
