@@ -23,9 +23,6 @@ class MovieQuoteElasticSearchDao(elasticClient: HttpClient, indexName: String)(i
 
   val typeName: String = "moviequote"
 
-
-//  Await.result(onStartup, 10 seconds)
-
   override def addMovieQuote(quote: MovieQuoteWithoutId): Future[String] =
   for {
       quoteId <- getFreeId
@@ -36,36 +33,23 @@ class MovieQuoteElasticSearchDao(elasticClient: HttpClient, indexName: String)(i
   } yield quoteId
 
 
-  override def getMovieQuote(quote: String): Future[MovieQuote] =
-    for {
-      result <- elasticClient.execute {
-        search(indexName) query matchAllQuery() postFilter termQuery("quote", quote)
-      }
-
-      response = result.getOrElse(throw RequestFailed())
-      _ = if(response.result.isSourceEmpty || !response.result.exists) throw MovieQuoteNotFoundException(movieId)
-      quote = response.result.sourceAsString.parseJson.convertTo[MovieQuote]
-
-  } yield quote
+  override def getMovieQuote(quote: String): Future[MovieQuote] = ???
+//    for {
+//      result <- elasticClient.execute {
+//        search(indexName) query matchAllQuery() postFilter termQuery("quote", quote)
+//      }
+//
+//      response = result.getOrElse(throw RequestFailed())
+//      _ = if(response.result.isSourceEmpty || !response.result.exists) throw MovieQuoteNotFoundException(movieId)
+//      quote = response.result.sourceAsString.parseJson.convertTo[MovieQuote]
+//
+//  } yield quote
 
   override def deleteMovieQuote(quoteId: String): Future[String] = ???
 
   override def updateMovieQuote(movieId: String, quote: MovieQuoteWithoutId): Future[String] = ???
 
-//  override def getMovieByQuote(quote: String): Future[Movie] = ??? // put students to implement this one during the lab!!!
-
   private def getFreeId: Future[String] = Future.successful(Random.nextInt(100000).toString)
 
-  //  private def onStartup: Future[Unit] =
-//    for {
-//      _ <- elasticClient.execute {
-//        mapping(typeName) as (
-//          nestedField("id"),
-//          textField("title"),
-//          intField("year"),
-//          doubleField("rating") analyzer StopAnalyzer
-//        )
-//      }
-//    } yield ()
 
 }
