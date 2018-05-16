@@ -6,8 +6,8 @@ import akka.http.scaladsl.server.Directives.{complete, get, path, post}
 import spray.json.{DefaultJsonProtocol, JsNumber, JsValue, RootJsonFormat}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.ExceptionHandler
-import labs.simplemovieserver.database.MovieDao
-import labs.simplemovieserver.datamodel.{Movie, MovieNotFoundException, MovieWithoutId}
+import labs.movieserver.database.Movie.MovieDao
+import labs.movieserver.datamodel.{Movie, MovieNotFoundException, MovieWithoutId}
 
 class MovieApi(movieDAO: MovieDao) extends SprayJsonSupport {
 
@@ -25,7 +25,7 @@ class MovieApi(movieDAO: MovieDao) extends SprayJsonSupport {
             get {
               complete(movieDAO.getAllMovies)
             } ~
-            post { entity(as[MovieWithoutId]) { newMovie =>
+              post { entity(as[MovieWithoutId]) { newMovie =>
                 complete(movieDAO.addMovie(newMovie))
               }}
           } ~
@@ -47,8 +47,8 @@ class MovieApi(movieDAO: MovieDao) extends SprayJsonSupport {
 
   val globalExceptionHandler = ExceptionHandler {
     case ex: MovieNotFoundException => {
-        println(s"Not Found Movie ${ex.movieId}")
-        complete(HttpResponse(StatusCodes.NotFound, entity = ex.getMessage()))
+      println(s"Not Found Movie ${ex.movieId}")
+      complete(HttpResponse(StatusCodes.NotFound, entity = ex.getMessage()))
     }
     case ex: Exception => {
       println(s"General Exception : ${ex.getMessage}")
