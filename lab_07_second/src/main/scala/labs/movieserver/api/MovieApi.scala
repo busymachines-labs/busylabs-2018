@@ -6,10 +6,11 @@ import akka.http.scaladsl.server.Directives.{complete, get, path, post}
 import spray.json.{DefaultJsonProtocol, JsNumber, JsValue, RootJsonFormat}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.ExceptionHandler
-import labs.simplemovieserver.database.MovieDao
-import labs.simplemovieserver.datamodel.{Movie, MovieNotFoundException, MovieWithoutId}
+import labs.movieserver.database.Movie.MovieDao
+import labs.movieserver.datamodel.{Movie, MovieNotFoundException, MovieWithoutId}
+import labs.movieserver.migrationService.MovieService
 
-class MovieApi(movieDAO: MovieDao) extends SprayJsonSupport {
+class MovieApi(movieDAO: MovieDao, movieService: MovieService) extends SprayJsonSupport {
 
   import DefaultJsonProtocol._
 
@@ -27,7 +28,7 @@ class MovieApi(movieDAO: MovieDao) extends SprayJsonSupport {
             } ~
             post { entity(as[MovieWithoutId]) { newMovie =>
                 complete(movieDAO.addMovie(newMovie))
-              }}
+            }}
           } ~
             path(Segment) { movieId =>
               get {
@@ -39,7 +40,13 @@ class MovieApi(movieDAO: MovieDao) extends SprayJsonSupport {
                 delete {
                   complete(movieDAO.deleteMovie(movieId))
                 }
-            }
+            } ~ pathPrefix("migration") {
+                path(Segment) {
+                  rating => get {
+                    complete(movieService.filterMovies(rating.toDouble))
+                  }
+                }
+          }
         }
       }
     }
@@ -47,8 +54,8 @@ class MovieApi(movieDAO: MovieDao) extends SprayJsonSupport {
 
   val globalExceptionHandler = ExceptionHandler {
     case ex: MovieNotFoundException => {
-        println(s"Not Found Movie ${ex.movieId}")
-        complete(HttpResponse(StatusCodes.NotFound, entity = ex.getMessage()))
+      println(s"Not Found Movie ${ex.movieId}")
+      complete(HttpResponse(StatusCodes.NotFound, entity = ex.getMessage()))
     }
     case ex: Exception => {
       println(s"General Exception : ${ex.getMessage}")
