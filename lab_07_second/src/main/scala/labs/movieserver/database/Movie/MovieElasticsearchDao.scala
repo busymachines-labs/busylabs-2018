@@ -27,8 +27,6 @@ class MovieElasticsearchDao(elasticClient: HttpClient, indexName: String)(implic
 
   val typeName: String = "movie"
 
-//  Await.result(onStartup, 10 seconds)
-
 
   override def addMovie(movie: MovieWithoutId): Future[String] =
     for {
@@ -38,6 +36,7 @@ class MovieElasticsearchDao(elasticClient: HttpClient, indexName: String)(implic
         (indexInto (indexName, typeName) doc movieWithId.toJson.toString() id movieId)
       }
     } yield movieId
+
 
   override def deleteMovie(movieId: String): Future[String] = for {
     _ <- elasticClient.execute {
@@ -74,21 +73,6 @@ class MovieElasticsearchDao(elasticClient: HttpClient, indexName: String)(implic
         (indexInto (indexName, typeName) doc newMovie.toJson.toString() id movieId)
       }
     } yield movieId
-
-
-
-//  private def onStartup: Future[Unit] =
-//    for {
-//      _ <- elasticClient.execute{
-//        mapping(typeName)        as (
-//            nestedField("id"),
-//            textField("title"),
-//            intField("year"),
-//            doubleField("rating") analyzer StopAnalyzer
-//        )}
-//    } yield ()
-
-
 
 
 
