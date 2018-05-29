@@ -7,6 +7,7 @@ import akka.stream.ActorMaterializer
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import common.{Config, Endpoint}
 import excercises.csp.StaticCsp
+import excercises.jwt.BadJWTUsage
 import excercises.xss.EchoChat
 
 trait SecurityExercisesAssembly extends SprayJsonSupport {
@@ -23,9 +24,10 @@ trait SecurityExercisesAssembly extends SprayJsonSupport {
 
   val endpoints: List[Endpoint] = List(
     new EchoChat,
-    new StaticCsp
+    new StaticCsp,
+    new BadJWTUsage
   )
 
   def AppRoutes: Route =
-    endpoints.foldLeft(indexRoute)((a, b) => a ~ b.routes) ~ complete(404 -> "Not found")
+    endpoints.foldLeft(indexRoute)((acc, current) => acc ~ current.routes) ~ complete(404 -> "Not found")
 }

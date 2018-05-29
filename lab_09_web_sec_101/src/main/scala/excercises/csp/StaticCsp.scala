@@ -9,7 +9,6 @@ import akka.stream.ActorMaterializer
 import common.{Config, Endpoint}
 
 class StaticCsp(implicit mat: ActorMaterializer) extends Endpoint with RespondWithDirectives with SprayJsonSupport {
-
   override val resourceIdentifier: String = "csp"
   override val resourcePath:       String = Config.resourcePath(resourceIdentifier)
 
@@ -17,6 +16,7 @@ class StaticCsp(implicit mat: ActorMaterializer) extends Endpoint with RespondWi
     "default-src 'self'; script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self'; media-src 'none'; connect-src 'self'; base-uri 'self'; form-action 'self';"
   val cspHeader = RawHeader("Content-Security-Policy", cspHeaderValue)
 
+  // Use header to deny certain resources to be loaded
   lazy val routes: Route = pathPrefix(resourceIdentifier) {
     staticRoute
   }

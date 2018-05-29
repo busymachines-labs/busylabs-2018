@@ -9,7 +9,7 @@ Lab 09 contains code examples for:
 6. DoS  (Denial of service)
 7. SQLi & NoSQLi (Injection)
 
-These examples are bad (academic purpose). Really bad. Unbelievably bad. Yuge security risks. Don't use them in your apps... srsly.
+These examples are bad (academic purpose only). Really bad. Unbelievably bad. Yuge security risks. Don't use them in your apps... srsly.
 
 ## XSS
 ### Description
@@ -31,17 +31,29 @@ For our exercise, the following attack vector can be used:
 * [List of naughty strings](https://github.com/minimaxir/big-list-of-naughty-strings)
 * [OWASP](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS))
 
-- - -
-
 ## CSP
 ### Description
-### Resources
+The content-security-policy allows us to instruct the browser (if supported), how it should treat dynamic resources.
 
-## XSRF
-### Description
+Our attack vector consists of:
+* A css and a js resource
+* An img with an 'onerror' event
+* An inline script
 ### Resources
+* [CSP Home](https://content-security-policy.com/)
 
 ## JWT
+### Description
+A json web token is a way of representing certain claims between parties. Access the resource links for more informations. It has multiple advantages, such as:
+* Self containment
+* Small in size
+
+Our attack vector consists of modifying the cookie containing the token and taking advantage of an unsafe usage case of a JWT library.
+### Resources
+* [JWT Home 1](https://jwt.io)
+* [JWT Home 2](https://www.jsonwebtoken.io/)
+
+## XSRF
 ### Description
 ### Resources
 
