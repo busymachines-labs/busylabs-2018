@@ -1,13 +1,11 @@
-import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.http.scaladsl.Http
 import com.typesafe.config.ConfigFactory
+import excercises.SecurityExercisesAssembly
 
-object Main extends App {
-  implicit val system           = ActorSystem("my-system")
-  implicit val materializer     = ActorMaterializer()
-  implicit val executionContext = system.dispatcher
-
+object Main extends App with SecurityExercisesAssembly {
   val conf = ConfigFactory.load
+  val host = conf.getString("app.host")
+  val port = conf.getInt("app.port")
 
-  println("Running...")
+  val bindingFuture = Http().bindAndHandle(AppRoutes, host, port)
 }
