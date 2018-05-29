@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Echo Chat</title>
+</head>
+<body>
+    <a href="/">Home</a><br>
+    <h1>XSS exercise</h1>
+    <input id="chatBox" type="text">
+
+    <script>
+        var socket = new WebSocket("ws://localhost:10001/xss/socket");
+        var input  = document.getElementById("chatBox");
+
+        var id            = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 8)
+        var decodeMessage = (data) => data.id + ": " + data.m;
+        var createMessage = (message) => JSON.stringify({
+            id: id,
+            m: message
+        });
+
+        input.addEventListener("keyup", (event) => {
+            if (event.key === "Enter") {
+                console.log('Should send:', input.value);
+
+                var message = createMessage(input.value);
+                socket.send(message);
+
+                input.value = "";
+            }
+        });
+
+        socket.onmessage = (event) => {
+            console.log('Client received:', event.data);
+
+            var data            = JSON.parse(event.data);
+            var decodedContent  = decodeMessage(data)
+            var paragraph       = document.createElement("P");
+            paragraph.innerHTML = decodedContent;
+
+            document.body.appendChild(paragraph);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+package excercises
+
+import akka.actor.ActorSystem
+import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
+import akka.stream.ActorMaterializer
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
+import common.{Config, Endpoint}
+import excercises.csp.StaticCsp
+import excercises.xss.EchoChat
+
+trait SecurityExercisesAssembly extends SprayJsonSupport {
+
+  implicit val system           = ActorSystem("my-system")
+  implicit val materializer     = ActorMaterializer()
+  implicit val executionContext = system.dispatcher
+
+  private val indexName = Config.resourcePath("index.html")
+
+  lazy val indexRoute: Route = path("") {
+    getFromResource(indexName)
+  }
+
+  val endpoints: List[Endpoint] = List(
+    new EchoChat,
+    new StaticCsp
+  )
+
+  def AppRoutes: Route =
+    endpoints.foldLeft(indexRoute)((a, b) => a ~ b.routes) ~ complete(404 -> "Not found")
+}
