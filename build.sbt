@@ -13,7 +13,8 @@ lazy val root =
       lab_06,
       lab_07,
       lab_07_second,
-      lab_08
+      lab_08,
+      lab_09_web_sec_101
     )
 
 //equivalent to: Project(id = "lab_02", base = file("./lab_02"))
@@ -49,6 +50,9 @@ lazy val lab_08 = project
   .settings(commonsSettings)
   .settings(sbtAssemblySettings)
 
+lazy val lab_09_web_sec_101 = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
 
 def commonsSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.6",
