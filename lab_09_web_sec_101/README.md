@@ -9,7 +9,7 @@ Lab 09 contains code examples for:
 6. DoS  (Denial of service)
 7. SQLi & NoSQLi (Injection)
 
-These examples are bad (academic purpose only). Really bad. Unbelievably bad. Yuge security risks. Don't use them in your apps... srsly.
+These examples are bad (academic purpose only). Really bad. Unbelievably bad. Yuge security risks. Don't copy paste them in your apps. Think first, then act.
 
 ## XSS
 ### Description
@@ -36,7 +36,7 @@ For our exercise, the following attack vector can be used:
 The content-security-policy allows us to instruct the browser (if supported), how it should treat dynamic resources.
 
 Our attack vector consists of:
-* A css and a js resource
+* A 'malicious' css and a js resource injected via cdn
 * An img with an 'onerror' event
 * An inline script
 ### Resources
@@ -48,13 +48,16 @@ A json web token is a way of representing certain claims between parties. Access
 * Self containment
 * Small in size
 
-Our attack vector consists of modifying the cookie containing the token and taking advantage of an unsafe usage case of a JWT library.
+We will be using PostMan for this exercise. Our attack vector consists of modifying the header containing the auth token and taking advantage of an unsafe usage case of a JWT library:
+* Attack vector - eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IklvbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTUxNjIzOTAyMn0.
+* Safe & valid token - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IklvbiIsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.kB1GuviR0sb-RqsfNwv8p0Og468zuYzWZT-tTFW_oUs
 ### Resources
 * [JWT Home 1](https://jwt.io)
 * [JWT Home 2](https://www.jsonwebtoken.io/)
 
 ## XSRF
 ### Description
+
 ### Resources
 
 ## DoS

