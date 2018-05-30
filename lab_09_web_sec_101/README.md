@@ -42,7 +42,7 @@ Our attack vector consists of:
 ### Resources
 * [CSP Home](https://content-security-policy.com/)
 
-## JWT
+## JWT ('jot')
 ### Description
 A json web token is a way of representing certain claims between parties. Access the resource links for more informations. It has multiple advantages, such as:
 * Self containment
@@ -55,14 +55,27 @@ We will be using PostMan for this exercise. Our attack vector consists of modify
 * [JWT Home 1](https://jwt.io)
 * [JWT Home 2](https://www.jsonwebtoken.io/)
 
-## XSRF
+## XSRF (sea surf)
 ### Description
+Cross-site request forgery - Attackers making requests on your behalf (closely related to phising)
 
+For our example, the attacker will succeed in transfering some money from our bank account.
 ### Resources
+* [XSRF or CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery)
 
-## DoS
+## DDoS / DoS
 ### Description
+A 'Denial of Service' attack consists in flooding a service with requests, denying any legitimate users access to it. 
+
+For this exercise we will be performing a 'Distributed DoS' attack. We will be using an open sourced http load testing tool called [wrk](https://github.com/wg/wrk). Download it, unzip it and 'make' it, then let's deny the lab 9 backend:
+```bash
+./wrk  -t12 -c800 -d60s http://<LOCAL_IP>:10001/xss
+```
+
+The `/xss` endpoint was chosen because it also creates a WebSocket connection -> Extra load.
 ### Resources
+* [DoS](https://www.digitalattackmap.com/understanding-ddos/)
+* [Mirai IoT DDos attack](https://www.csoonline.com/article/3258748/security/the-mirai-botnet-explained-how-teen-scammers-and-cctv-cameras-almost-brought-down-the-internet.html)
 
 ## SQLi & NoSQLi
 ### Description
