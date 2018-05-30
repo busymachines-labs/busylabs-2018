@@ -38,7 +38,7 @@ trait SecurityExercisesAssembly extends SprayJsonSupport {
   def MaliciousRoutes: Route = {
     val hijacker = new SessionHijacker
 
-    hijacker.routes
+    hijacker.routes ~ notFound
   }
 
 }
