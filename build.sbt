@@ -13,7 +13,8 @@ lazy val root =
       lab_06,
       lab_07,
       lab_07_second,
-      lab_08
+      lab_08,
+      lab_09_web_sec_101
     )
 
 //equivalent to: Project(id = "lab_02", base = file("./lab_02"))
@@ -49,6 +50,9 @@ lazy val lab_08 = project
   .settings(commonsSettings)
   .settings(sbtAssemblySettings)
 
+lazy val lab_09_web_sec_101 = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
 
 def commonsSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.6",
@@ -101,8 +105,9 @@ def commonsSettings: Seq[Setting[_]] = Seq(
     slick,
     hikari,
     slickAlpakka,
-    typeSafeConfig
-
+    typeSafeConfig,
+    // jwt
+    jwt
   ),
   /*
    * Eliminates useless, unintuitive, and sometimes broken additions of `withFilter`
@@ -321,7 +326,7 @@ lazy val scalaTest:  ModuleID = "org.scalatest"  %% "scalatest"  % "3.0.5"  % Te
 lazy val scalaCheck: ModuleID = "org.scalacheck" %% "scalacheck" % "1.13.5" % Test withSources ()
 
 //============================================================================================
-//=========================================  database =========================================
+//========================================= database =========================================
 //============================================================================================
 
 lazy val mongoCasbah =  "org.mongodb" %% "casbah" % "3.1.1" pomOnly()
@@ -330,3 +335,8 @@ lazy val slick = "com.typesafe.slick" %% "slick" % "2.1.0"
 lazy val hikari = "com.zaxxer" % "HikariCP" % "3.1.0"
 lazy val slickAlpakka = "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "0.18"
 lazy val typeSafeConfig =  "com.typesafe" % "config" % "1.3.2"
+
+//============================================================================================
+//========================================== jwt =============================================
+//============================================================================================
+lazy val jwt = "com.pauldijou" %% "jwt-core" % "0.16.0"
