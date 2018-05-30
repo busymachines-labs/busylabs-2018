@@ -8,6 +8,7 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import common.{Config, Endpoint}
 import excercises.csp.StaticCsp
 import excercises.jwt.BadJWTUsage
+import excercises.xsrf.{SessionHijacker, SimpleBankApi}
 import excercises.xss.EchoChat
 
 trait SecurityExercisesAssembly extends SprayJsonSupport {
@@ -25,9 +26,19 @@ trait SecurityExercisesAssembly extends SprayJsonSupport {
   val endpoints: List[Endpoint] = List(
     new EchoChat,
     new StaticCsp,
-    new BadJWTUsage
+    new BadJWTUsage,
+    new SimpleBankApi
   )
 
-  def AppRoutes: Route =
-    endpoints.foldLeft(indexRoute)((acc, current) => acc ~ current.routes) ~ complete(404 -> "Not found")
+  private val notFound = complete(404 -> "Not found")
+
+  def MainRoutes: Route =
+    endpoints.foldLeft(indexRoute)((acc, current) => acc ~ current.routes) ~ notFound
+
+  def MaliciousRoutes: Route = {
+    val hijacker = new SessionHijacker
+
+    hijacker.routes
+  }
+
 }

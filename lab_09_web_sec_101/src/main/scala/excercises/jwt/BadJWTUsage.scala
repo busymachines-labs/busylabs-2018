@@ -10,8 +10,8 @@ import pdi.jwt.{Jwt,   JwtAlgorithm}
 import scala.util.{Failure, Success, Try}
 
 /**
-  * Safe JWT      - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IklvbiIsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.kB1GuviR0sb-RqsfNwv8p0Og468zuYzWZT-tTFW_oUs
-  * Attack vector - eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IklvbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTUxNjIzOTAyMn0.
+  * Safe signed JWT - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IklvbiIsInJvbGUiOiJtZW1iZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.kB1GuviR0sb-RqsfNwv8p0Og468zuYzWZT-tTFW_oUs
+  * Attack vector   - eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IklvbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTUxNjIzOTAyMn0.
   */
 
 class BadJWTUsage extends Endpoint with MarshallingDirectives with SprayJsonSupport {
@@ -28,9 +28,9 @@ class BadJWTUsage extends Endpoint with MarshallingDirectives with SprayJsonSupp
     path("sensitiveData") {
       headerValueByName("authToken") { token =>
         get {
-          // Bad implementation in older libraries
+          // Bad implementation in older libraries, especially in non type-safe languages (JavaScript)
           val decoded = Jwt.decodeAll(token) match {
-            case Failure(p) =>
+            case Failure(_) =>
               Jwt
                 .decodeAll(token, "secret", Seq(JwtAlgorithm.HS256))
                 .map(d => (d._1.parseJson.convertTo[JwtHeader], d._2.parseJson.convertTo[JwtPayload]))
@@ -38,9 +38,6 @@ class BadJWTUsage extends Endpoint with MarshallingDirectives with SprayJsonSupp
               Try((d._1.parseJson.convertTo[JwtHeader], d._2.parseJson.convertTo[JwtPayload]))
           }
 
-          println(decoded)
-
-          // Result of jwt interpretation
           decoded match {
             case Success((_, JwtPayload(_, _, "member", _))) => complete(200 -> "Hello Member")
             case Success((_, JwtPayload(_, _, "admin",  _))) => complete(200 -> "Hello Admin (Access to sensitive data)")

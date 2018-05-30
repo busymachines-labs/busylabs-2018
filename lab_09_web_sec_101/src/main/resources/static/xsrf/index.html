@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Safe Bank</title>
+</head>
+<body>
+    <h1>Bank</h1>
+    <a href="http://localhost:10002/xsrf" target="_blank">Be dumb and click the link</a>
+
+    <script>
+        var login = new XMLHttpRequest();
+        login.open('GET', '/xsrf/login', true);
+
+        login.onload = function() {
+          if (login.status >= 200 && login.status < 400) {
+            // Success!
+            var resp = login.responseText;
+            alert("Logged in")
+          } else {
+            // We reached our target server, but it returned an error
+
+          }
+        };
+
+        login.onerror = function() {
+          // There was a connection error of some sort
+        };
+
+        login.send();
+
+        var request = new XMLHttpRequest();
+        request.open('GET', '/xsrf/account', true);
+        request.onload = function() {
+          if (request.status >= 200 && request.status < 400) {
+            // Success!
+            var resp = request.responseText;
+            console.log(resp);
+            console.log(JSON.parse(resp))
+          } else {
+            // We reached our target server, but it returned an error
+
+          }
+        };
+
+        request.onerror = function() {
+          // There was a connection error of some sort
+        };
+
+        request.send()
+    </script>
+</body>
+</html>
