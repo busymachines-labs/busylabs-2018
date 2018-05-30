@@ -14,40 +14,31 @@
 
         login.onload = function() {
           if (login.status >= 200 && login.status < 400) {
-            // Success!
             var resp = login.responseText;
-            alert("Logged in")
-          } else {
-            // We reached our target server, but it returned an error
 
+            alert("Logged in")
+
+            getAccDetails()
           }
         };
 
-        login.onerror = function() {
-          // There was a connection error of some sort
+        login.onerror = function(e) {
+            console.error('[RequestError]', e)
         };
 
         login.send();
 
-        var request = new XMLHttpRequest();
-        request.open('GET', '/xsrf/account', true);
-        request.onload = function() {
-          if (request.status >= 200 && request.status < 400) {
-            // Success!
-            var resp = request.responseText;
-            console.log(resp);
-            console.log(JSON.parse(resp))
-          } else {
-            // We reached our target server, but it returned an error
+        function getAccDetails() {
+            var request = new XMLHttpRequest();
+            request.open('GET', '/xsrf/account', true);
+            request.onload = function() {
+                if (request.status >= 200 && request.status < 400) {
+                    console.log(JSON.parse(resp))
+                }
+            };
 
-          }
-        };
-
-        request.onerror = function() {
-          // There was a connection error of some sort
-        };
-
-        request.send()
+            request.send()
+        }
     </script>
 </body>
 </html>
