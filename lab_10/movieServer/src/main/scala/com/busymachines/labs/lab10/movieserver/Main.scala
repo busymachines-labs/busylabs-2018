@@ -30,8 +30,7 @@ object Main extends App {
   val psqlUser     = conf.getString("psql.user")
   val psqlPassword = conf.getString("psql.password")
 
-  {
-
+  val migrationIO: IO[Int] = IO {
     val flyway = new Flyway()
     flyway.setDataSource(psqlURL, psqlUser, psqlPassword)
     flyway.migrate()
@@ -45,15 +44,20 @@ object Main extends App {
 
   val movieService = new MovieService(movieDao = movieDao)
   val movieApi     = new MovieApi(movieService)
-1
-  val httpServer: IO[Unit] = HttpServer(
+
+  val serverIO: IO[Unit] = HttpServer(
     name  = "HttpServerTest",
     route = movieApi.movieRoute,
     config = MinimalWebServerConfig(
-      host = "0.0.0.0",
-      port = 3003
+      host = host,
+      port = port
     ) // or.default
   ).startThenCleanUpActorSystem
 
-  httpServer.unsafeRunSync()
+  val runIO = for {
+    _ <- migrationIO
+    _ <- serverIO
+  } yield ()
+
+  runIO.unsafeRunSync()
 }
