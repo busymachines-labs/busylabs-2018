@@ -13,10 +13,6 @@ class MovieDaoPostgres (psqlURL: String, psqlUser: String, psqlPassword: String)
     "org.postgresql.Driver", psqlURL, psqlUser, psqlPassword
   )
 
-  //def getAllMoviesWithComments: Future[List[(MovieDbObject, Option[MovieCommentDbObject])]] =
-  //  sql"select * from movies m left outer join moviecomments c on m.id = c.movie_id".
-  //    query[(MovieDbObject, Option[MovieCommentDbObject])].to[List].transact(transactor).unsafeToFuture()
-
   override def getAllMovies(): Future[List[MovieDbObject]] =
     sql"select * from movies".
       query[MovieDbObject].to[List].transact(transactor).unsafeToFuture()
