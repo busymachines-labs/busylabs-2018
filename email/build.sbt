@@ -2,65 +2,7 @@ import sbt._
 import sbtassembly.MergeStrategy
 import sbtassembly.PathList
 
-lazy val root =
-  Project(id = "busylabs", base = file("."))
-    .settings(commonsSettings)
-    .aggregate(
-      email,
-      jwt,
-      lab_02,
-      lab_03,
-      lab_04,
-      lab_05,
-      lab_06,
-      lab_07,
-      lab_07_second,
-      lab_08,
-      lab_09_web_sec_101
-    )
-
-lazy val email = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val jwt = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-//equivalent to: Project(id = "lab_02", base = file("./lab_02"))
-lazy val lab_02 = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val lab_03 = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val lab_04 = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val lab_05 = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val lab_06 = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val lab_07 = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val lab_07_second = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val lab_08 = project
-  .settings(commonsSettings)
-  .settings(sbtAssemblySettings)
-
-lazy val lab_09_web_sec_101 = project
+lazy val root = Project("email", file("."))
   .settings(commonsSettings)
   .settings(sbtAssemblySettings)
 
@@ -70,55 +12,16 @@ def commonsSettings: Seq[Setting[_]] = Seq(
     //utils
     bmcCore,
     bmcDuration,
-    //effects + streams
-    catsCore,
-    catsEffect,
-    monix,
-    fs2,
     bmcEffects,
-    //JSON stuff
-    circeCore,
-    circeGeneric,
-    circeGenericExtras,
-    bmcJson,
-    //akka + akka-http
-    akkaActor,
-    akkaStream,
-    akkaHttp,
-    akkaHttpCirceIntegration,
-    bmcRestCore,
-    bmcRestJson,
-    //http4s
-    http4sBlazeServer,
-    http4sCirce,
-    //doobie
-    doobieHikari,
-    doobiePostgres,
     //logging
     log4cats,
-    scalaLogging,
     logbackClassic,
     //email
     javaxMail,
     //test stuff
     scalaTest,
     scalaCheck,
-    akkaTK,
-    akkaHttpTK,
-    doobieTK,
-    //misc
-    attoParser,
-    // akka spray json
-    akkaSprayJson,
-    // database
-    mongoCasbah,
-    postgresql,
-    slick,
-    hikari,
-    slickAlpakka,
-    typeSafeConfig,
-    jwtPaulDijou
-  ) ++ tsec,
+  ),
   /*
    * Eliminates useless, unintuitive, and sometimes broken additions of `withFilter`
    * when using generator arrows in for comprehensions. e.g.

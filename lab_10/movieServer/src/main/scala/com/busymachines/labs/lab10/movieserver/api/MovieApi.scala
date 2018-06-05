@@ -24,21 +24,21 @@ class MovieApi(movieService: MovieService)(implicit ec: ExecutionContext) extend
         pathPrefix("movie") {
           pathEndOrSingleSlash{
             get {
-              complete(movieService.getAllMovies)
+              complete(movieService.getAllMovies.unsafeToFuture())
             } ~
               post { entity(as[MovieCreate]) { newMovie =>
-                complete(movieService.addMovie(newMovie).map(_.toString))
+                complete(movieService.addMovie(newMovie).map(_.toString).unsafeToFuture())
               }}
           } ~
             path(Segment) { movieId: String =>
               get {
-                complete(movieService.getMovie(movieId))
+                complete(movieService.getMovie(movieId).unsafeToFuture())
               } ~
                 put {entity(as[MovieCreate]) { newMovie =>
-                  complete(movieService.updateMovie(movieId, newMovie).map(_.toString))
+                  complete(movieService.updateMovie(movieId, newMovie).map(_.toString).unsafeToFuture())
                 }} ~
                 delete {
-                  complete(movieService.deleteMovie(movieId).map(_.toString))
+                  complete(movieService.deleteMovie(movieId).map(_.toString).unsafeToFuture())
                 }
             }
         }
