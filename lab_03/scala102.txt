@@ -1,0 +1,26 @@
+1) var vs val;
+Expression-based
+Types are important -> Bottom type Nothing
+
+
+Referential transparency, purity, immutability. 
+
+Exemplu de clasa de User in Scala, stil Java. Ce facem cu setterele -> preferam sa construim un obiect nou?
+
+2) Case classes, Pattern Matching
+
+3) Evaluation Strategies 
+lazy values scala
+
+4) Tail Recursion
+transform to tailrecursion:
+let rec factorial n = if (n <=1) then n else n * factorial (n-1)
+
+
+5) Functions as arguments (Currying)
+
+6) Option, Lists
+Liste: fold_left, filter, map
+Eliminate consecutive duplicates of list elements.
+
+
