@@ -6,6 +6,7 @@ lazy val root =
   Project(id = "busylabs", base = file("."))
     .settings(commonsSettings)
     .aggregate(
+      email,
       lab_02,
       lab_03,
       lab_04,
@@ -16,6 +17,10 @@ lazy val root =
       lab_08,
       lab_09_web_sec_101
     )
+
+lazy val email = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
 
 //equivalent to: Project(id = "lab_02", base = file("./lab_02"))
 lazy val lab_02 = project
@@ -293,7 +298,7 @@ lazy val akkaStream: ModuleID = "com.typesafe.akka" %% "akka-stream" % akkaVersi
 lazy val akkaHttpVersion: String   = "10.1.1"
 lazy val akkaHttp:        ModuleID = "com.typesafe.akka" %% "akka-http" % akkaHttpVersion
 
-lazy val akkaSprayJson: ModuleID   = "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion
+lazy val akkaSprayJson: ModuleID = "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion
 
 /**
   * https://github.com/hseeberger/akka-http-json
@@ -329,12 +334,12 @@ lazy val scalaCheck: ModuleID = "org.scalacheck" %% "scalacheck" % "1.13.5" % Te
 //========================================= database =========================================
 //============================================================================================
 
-lazy val mongoCasbah =  "org.mongodb" %% "casbah" % "3.1.1" pomOnly()
-lazy val postgresql = "org.postgresql" % "postgresql" % "9.3-1100-jdbc4"
-lazy val slick = "com.typesafe.slick" %% "slick" % "2.1.0"
-lazy val hikari = "com.zaxxer" % "HikariCP" % "3.1.0"
-lazy val slickAlpakka = "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "0.18"
-lazy val typeSafeConfig =  "com.typesafe" % "config" % "1.3.2"
+lazy val mongoCasbah    = "org.mongodb"        %% "casbah"                    % "3.1.1" pomOnly ()
+lazy val postgresql     = "org.postgresql"     % "postgresql"                 % "9.3-1100-jdbc4"
+lazy val slick          = "com.typesafe.slick" %% "slick"                     % "2.1.0"
+lazy val hikari         = "com.zaxxer"         % "HikariCP"                   % "3.1.0"
+lazy val slickAlpakka   = "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "0.18"
+lazy val typeSafeConfig = "com.typesafe"       % "config"                     % "1.3.2"
 
 //============================================================================================
 //========================================== jwt =============================================
