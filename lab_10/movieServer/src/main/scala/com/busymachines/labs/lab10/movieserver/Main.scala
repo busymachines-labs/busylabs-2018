@@ -50,5 +50,6 @@ object Main extends App {
 
   val bindingFuture = Http().bindAndHandle(movieApi.movieRoute, host, port)
 
+
 }
 
