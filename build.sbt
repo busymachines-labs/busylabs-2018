@@ -136,7 +136,7 @@ def commonsSettings: Seq[Setting[_]] = Seq(
    *
    * https://github.com/oleg-py/better-monadic-for
    */
-  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.2.0"),
+  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.2.4"),
   scalacOptions ++= customScalaCompileFlags,
   /**
     * This is here to eliminate eviction warnings from SBT.
