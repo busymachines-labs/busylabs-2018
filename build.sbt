@@ -6,6 +6,8 @@ lazy val root =
   Project(id = "busylabs", base = file("."))
     .settings(commonsSettings)
     .aggregate(
+      email,
+      jwt,
       lab_02,
       lab_03,
       lab_04,
@@ -16,6 +18,14 @@ lazy val root =
       lab_08,
       lab_09_web_sec_101
     )
+
+lazy val email = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
+
+lazy val jwt = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
 
 //equivalent to: Project(id = "lab_02", base = file("./lab_02"))
 lazy val lab_02 = project
@@ -85,6 +95,7 @@ def commonsSettings: Seq[Setting[_]] = Seq(
     doobieHikari,
     doobiePostgres,
     //logging
+    log4cats,
     scalaLogging,
     logbackClassic,
     //email
@@ -106,9 +117,8 @@ def commonsSettings: Seq[Setting[_]] = Seq(
     hikari,
     slickAlpakka,
     typeSafeConfig,
-    // jwt
-    jwt
-  ),
+    jwtPaulDijou
+  ) ++ tsec,
   /*
    * Eliminates useless, unintuitive, and sometimes broken additions of `withFilter`
    * when using generator arrows in for comprehensions. e.g.
@@ -280,6 +290,23 @@ lazy val doobieHikari   = "org.tpolecat" %% "doobie-hikari"    % "0.5.2" withSou
 lazy val doobiePostgres = "org.tpolecat" %% "doobie-postgres"  % "0.5.2" withSources () // Postgres driver 42.2.2 + type mappings.
 lazy val doobieTK       = "org.tpolecat" %% "doobie-scalatest" % "0.5.2" % Test withSources () // ScalaTest support for typechecking statements.
 
+val tsecV = "0.0.1-M11"
+
+lazy val tsec = Seq(
+  "io.github.jmcardon" %% "tsec-common"        % tsecV,
+  "io.github.jmcardon" %% "tsec-password"      % tsecV,
+  "io.github.jmcardon" %% "tsec-cipher-jca"    % tsecV,
+  "io.github.jmcardon" %% "tsec-cipher-bouncy" % tsecV,
+  "io.github.jmcardon" %% "tsec-mac"           % tsecV,
+  "io.github.jmcardon" %% "tsec-signatures"    % tsecV,
+  "io.github.jmcardon" %% "tsec-hash-jca"      % tsecV,
+  "io.github.jmcardon" %% "tsec-hash-bouncy"   % tsecV,
+  "io.github.jmcardon" %% "tsec-libsodium"     % tsecV,
+  "io.github.jmcardon" %% "tsec-jwt-mac"       % tsecV,
+  "io.github.jmcardon" %% "tsec-jwt-sig"       % tsecV,
+  "io.github.jmcardon" %% "tsec-http4s"        % tsecV
+)
+
 //============================================================================================
 //================================= http://akka.io/docs/ =====================================
 //======================================== akka ==============================================
@@ -293,7 +320,7 @@ lazy val akkaStream: ModuleID = "com.typesafe.akka" %% "akka-stream" % akkaVersi
 lazy val akkaHttpVersion: String   = "10.1.1"
 lazy val akkaHttp:        ModuleID = "com.typesafe.akka" %% "akka-http" % akkaHttpVersion
 
-lazy val akkaSprayJson: ModuleID   = "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion
+lazy val akkaSprayJson: ModuleID = "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion
 
 /**
   * https://github.com/hseeberger/akka-http-json
@@ -306,6 +333,7 @@ lazy val akkaHttpTK: ModuleID = "com.typesafe.akka" %% "akka-http-testkit" % akk
 //============================================================================================
 //=========================================  logging =========================================
 //============================================================================================
+lazy val log4cats = "io.chrisdavenport" %% "log4cats-slf4j" % "0.0.5"
 
 lazy val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2" withSources ()
 //this is a Java library, notice that we used one single % instead of %%
@@ -329,14 +357,12 @@ lazy val scalaCheck: ModuleID = "org.scalacheck" %% "scalacheck" % "1.13.5" % Te
 //========================================= database =========================================
 //============================================================================================
 
-lazy val mongoCasbah =  "org.mongodb" %% "casbah" % "3.1.1" pomOnly()
-lazy val postgresql = "org.postgresql" % "postgresql" % "9.3-1100-jdbc4"
-lazy val slick = "com.typesafe.slick" %% "slick" % "2.1.0"
-lazy val hikari = "com.zaxxer" % "HikariCP" % "3.1.0"
-lazy val slickAlpakka = "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "0.18"
-lazy val typeSafeConfig =  "com.typesafe" % "config" % "1.3.2"
+lazy val mongoCasbah    = "org.mongodb"        %% "casbah"                    % "3.1.1" pomOnly ()
+lazy val postgresql     = "org.postgresql"     % "postgresql"                 % "9.3-1100-jdbc4"
+lazy val slick          = "com.typesafe.slick" %% "slick"                     % "2.1.0"
+lazy val hikari         = "com.zaxxer"         % "HikariCP"                   % "3.1.0"
+lazy val slickAlpakka   = "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "0.18"
+lazy val typeSafeConfig = "com.typesafe"       % "config"                     % "1.3.2"
 
-//============================================================================================
-//========================================== jwt =============================================
-//============================================================================================
-lazy val jwt = "com.pauldijou" %% "jwt-core" % "0.16.0"
+//
+lazy val jwtPaulDijou = "com.pauldijou" %% "jwt-core" % "0.16.0"
