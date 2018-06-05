@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify CSP</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+    <a href="/">Home</a><br>
+    <h1>CSP exercise</h1>
+    <p><b>Pretty</b> text</p>
+
+    <script>alert("Pwned!");</script>
+    <img src="non-existing-source" onerror="alert('Still pwned!')">
+</body>
+</html>

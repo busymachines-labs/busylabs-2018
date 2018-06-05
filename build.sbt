@@ -10,7 +10,11 @@ lazy val root =
       lab_03,
       lab_04,
       lab_05,
-      lab_06
+      lab_06,
+      lab_07,
+      lab_07_second,
+      lab_08,
+      lab_09_web_sec_101
     )
 
 //equivalent to: Project(id = "lab_02", base = file("./lab_02"))
@@ -31,6 +35,22 @@ lazy val lab_05 = project
   .settings(sbtAssemblySettings)
 
 lazy val lab_06 = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
+
+lazy val lab_07 = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
+
+lazy val lab_07_second = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
+
+lazy val lab_08 = project
+  .settings(commonsSettings)
+  .settings(sbtAssemblySettings)
+
+lazy val lab_09_web_sec_101 = project
   .settings(commonsSettings)
   .settings(sbtAssemblySettings)
 
@@ -76,7 +96,18 @@ def commonsSettings: Seq[Setting[_]] = Seq(
     akkaHttpTK,
     doobieTK,
     //misc
-    attoParser
+    attoParser,
+    // akka spray json
+    akkaSprayJson,
+    // database
+    mongoCasbah,
+    postgresql,
+    slick,
+    hikari,
+    slickAlpakka,
+    typeSafeConfig,
+    // jwt
+    jwt
   ),
   /*
    * Eliminates useless, unintuitive, and sometimes broken additions of `withFilter`
@@ -262,6 +293,8 @@ lazy val akkaStream: ModuleID = "com.typesafe.akka" %% "akka-stream" % akkaVersi
 lazy val akkaHttpVersion: String   = "10.1.1"
 lazy val akkaHttp:        ModuleID = "com.typesafe.akka" %% "akka-http" % akkaHttpVersion
 
+lazy val akkaSprayJson: ModuleID   = "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion
+
 /**
   * https://github.com/hseeberger/akka-http-json
   */
@@ -291,3 +324,19 @@ lazy val javaxMail = "com.sun.mail" % "javax.mail" % "1.6.1" withSources ()
 
 lazy val scalaTest:  ModuleID = "org.scalatest"  %% "scalatest"  % "3.0.5"  % Test withSources ()
 lazy val scalaCheck: ModuleID = "org.scalacheck" %% "scalacheck" % "1.13.5" % Test withSources ()
+
+//============================================================================================
+//========================================= database =========================================
+//============================================================================================
+
+lazy val mongoCasbah =  "org.mongodb" %% "casbah" % "3.1.1" pomOnly()
+lazy val postgresql = "org.postgresql" % "postgresql" % "9.3-1100-jdbc4"
+lazy val slick = "com.typesafe.slick" %% "slick" % "2.1.0"
+lazy val hikari = "com.zaxxer" % "HikariCP" % "3.1.0"
+lazy val slickAlpakka = "com.lightbend.akka" %% "akka-stream-alpakka-slick" % "0.18"
+lazy val typeSafeConfig =  "com.typesafe" % "config" % "1.3.2"
+
+//============================================================================================
+//========================================== jwt =============================================
+//============================================================================================
+lazy val jwt = "com.pauldijou" %% "jwt-core" % "0.16.0"
