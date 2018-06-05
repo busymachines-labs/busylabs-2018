@@ -18,45 +18,37 @@ object Main extends App {
   implicit val materializer     = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  val conf = ConfigFactory.load
-
-  val host = conf.getString("server.host")
-  val port = conf.getInt("server.port")
-
-  val psqlHost     = conf.getString("psql.host")
-  val psqlDatabase = conf.getString("psql.database")
-  val psqlURL      = s"jdbc:postgresql://${psqlHost}/${psqlDatabase}"
-
-  val psqlUser     = conf.getString("psql.user")
-  val psqlPassword = conf.getString("psql.password")
-
-  val migrationIO: IO[Int] = IO {
-    val flyway = new Flyway()
-    flyway.setDataSource(psqlURL, psqlUser, psqlPassword)
-    flyway.migrate()
-  }
-
-  val userDao  = new UserDaoPostgres(psqlURL  = psqlURL, psqlUser = psqlUser, psqlPassword = psqlPassword)
-  val movieDao = new MovieDaoPostgres(psqlURL = psqlURL, psqlUser = psqlUser, psqlPassword = psqlPassword)
-
-  //println(s"All Users are: ${Await.result(userDao.getAllUsers, 10 seconds)}")
-  //println(s"All Movies are: ${Await.result(movieDao.getAllMoviesWithComments, 10 seconds)}")
-
-  val movieService = new MovieService(movieDao = movieDao)
-  val movieApi     = new MovieApi(movieService)
-
-  val serverIO: IO[Unit] = HttpServer(
-    name  = "HttpServerTest",
-    route = movieApi.movieRoute,
-    config = MinimalWebServerConfig(
-      host = host,
-      port = port
-    ) // or.default
-  ).startThenCleanUpActorSystem
-
   val runIO = for {
-    _ <- migrationIO
-    _ <- serverIO
+    conf         <- IO(ConfigFactory.load)
+    host         <- IO(conf.getString("server.host"))
+    port         <- IO(conf.getInt("server.port"))
+    psqlHost     <- IO(conf.getString("psql.host"))
+    psqlDatabase <- IO(conf.getString("psql.database"))
+    psqlURL      <- IO(s"jdbc:postgresql://${psqlHost}/${psqlDatabase}")
+
+    psqlUser     <- IO(conf.getString("psql.user"))
+    psqlPassword <- IO(conf.getString("psql.password"))
+
+    userDao  = new UserDaoPostgres(psqlURL  = psqlURL, psqlUser = psqlUser, psqlPassword = psqlPassword)
+    movieDao = new MovieDaoPostgres(psqlURL = psqlURL, psqlUser = psqlUser, psqlPassword = psqlPassword)
+
+    movieService = new MovieService(movieDao = movieDao)
+    movieApi     = new MovieApi(movieService)
+
+    _ <- IO {
+          val flyway = new Flyway()
+          flyway.setDataSource(psqlURL, psqlUser, psqlPassword)
+          flyway.migrate()
+        }
+    
+    _ <- HttpServer(
+          name  = "HttpServerTest",
+          route = movieApi.movieRoute,
+          config = MinimalWebServerConfig(
+            host = host,
+            port = port
+          ) // or.default
+        ).startThenCleanUpActorSystem
   } yield ()
 
   runIO.unsafeRunSync()
