@@ -16,7 +16,7 @@ object Main extends App {
 
   implicit val system           = ActorSystem("my-system")
   implicit val materializer     = ActorMaterializer()
-  implicit val executionContext = system.dispatcher
+  implicit val executionContext = ExecutionContext.global
 
   val runIO = for {
     conf         <- IO(ConfigFactory.load)
@@ -41,14 +41,7 @@ object Main extends App {
           flyway.migrate()
         }
     
-    _ <- HttpServer(
-          name  = "HttpServerTest",
-          route = movieApi.movieRoute,
-          config = MinimalWebServerConfig(
-            host = host,
-            port = port
-          ) // or.default
-        ).startThenCleanUpActorSystem
+    _ <- Http().bindAndHandle(movieApi.movieRoute, host, port).asIO
   } yield ()
 
   runIO.unsafeRunSync()
