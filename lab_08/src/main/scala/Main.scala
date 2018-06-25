@@ -17,8 +17,6 @@ object Main extends App {
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-
-
   val conf = ConfigFactory.load
 
   val host = conf.getString("server.host")
@@ -33,9 +31,11 @@ object Main extends App {
   val psqlUser = conf.getString("psql.user")
   val psqlPassword = conf.getString("psql.password")
 
-
   println(s"Starting Server at ${host}:${port}")
   println(s"Adding initial movie [title = ${initialMovieTitle}, year = ${initialMovieYear}, rating = ${initialMovieRating}]")
+
+  //val initialMovie = MovieWithoutId("BM", 2018, 5.0)
+  //val movieService = new MemoryMovieService(initialMovie)
 
   val movieService = new MongoMovieService()
   //val movieDao = new PsqlMovieDAO(MovieWithoutId(initialMovieTitle, initialMovieYear, initialMovieRating),
