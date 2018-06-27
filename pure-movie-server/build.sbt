@@ -11,7 +11,7 @@ lazy val server = project
   .settings(commonSettings)
   .settings(sbtAssemblySettings)
   .settings(
-    mainClass := Option("busylabs.pms.PureMovieServerApp")
+    mainClass := Option("pms.server.PureMovieServerApp")
   )
   .dependsOn(
     `pms-effects`,
@@ -33,6 +33,7 @@ lazy val `service-user` = project
   .settings(sbtAssemblySettings)
   .dependsOn(
     `algebra-user`,
+    `algebra-http-sec`,
     `pms-email`,
     `pms-config`,
     `pms-effects`,
@@ -42,6 +43,7 @@ lazy val `service-user` = project
   )
   .aggregate(
     `algebra-user`,
+    `algebra-http-sec`,
     `pms-email`,
     `pms-config`,
     `pms-effects`,
@@ -57,6 +59,7 @@ lazy val `service-movie` = project
     `algebra-user`,
     `algreba-imdb`,
     `algebra-movie`,
+    `algebra-http-sec`,
     `pms-config`,
     `pms-effects`,
     `pms-core`,
@@ -67,11 +70,30 @@ lazy val `service-movie` = project
     `algebra-user`,
     `algreba-imdb`,
     `algebra-movie`,
+    `algebra-http-sec`,
     `pms-config`,
     `pms-effects`,
     `pms-core`,
     `pms-json`,
     `pms-http`,
+  )
+
+lazy val `algebra-http-sec` = project
+  .settings(commonSettings)
+  .settings(sbtAssemblySettings)
+  .dependsOn(
+    `pms-config`,
+    `pms-effects`,
+    `pms-core`,
+    `pms-http`,
+    `algebra-user`,
+  )
+  .aggregate(
+    `pms-config`,
+    `pms-effects`,
+    `pms-core`,
+    `pms-http`,
+    `algebra-user`,
   )
 
 lazy val `algreba-imdb` = project
@@ -124,6 +146,7 @@ lazy val `pms-email` = project
   .dependsOn(
     `pms-core`,
     `pms-effects`,
+    `pms-config`,
   )
 
 lazy val `pms-http` = project
@@ -134,7 +157,6 @@ lazy val `pms-http` = project
     `pms-effects`,
     `pms-json`,
   )
-
 
 lazy val `pms-json` = project
   .settings(commonSettings)
