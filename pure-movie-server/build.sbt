@@ -16,6 +16,7 @@ lazy val server = project
   .dependsOn(
     `pms-effects`,
     `pms-config`,
+    `pms-db-config`,
     `pms-core`,
     `service-user`,
     `service-movie`,
@@ -23,6 +24,7 @@ lazy val server = project
   .aggregate(
     `pms-effects`,
     `pms-config`,
+    `pms-db-config`,
     `pms-core`,
     `service-user`,
     `service-movie`,
@@ -185,6 +187,14 @@ lazy val `pms-config` = project
     `pms-effects`
   )
 
+lazy val `pms-db-config` = project
+  .settings(commonSettings)
+  .settings(sbtAssemblySettings)
+  .dependsOn(
+    `pms-config`,
+    `pms-effects`
+  )
+
 lazy val `pms-effects` = project
   .settings(commonSettings)
   .settings(sbtAssemblySettings)
@@ -223,6 +233,7 @@ def commonSettings: Seq[Setting[_]] = Seq(
     //test stuff
     doobieTK,
     //misc
+    flyway,
     attoParser,
     pureConfig,
     spire,
@@ -403,6 +414,8 @@ lazy val doobieVersion = "0.5.3"
 lazy val doobieHikari   = "org.tpolecat" %% "doobie-hikari"   % doobieVersion withSources () // HikariCP transactor.
 lazy val doobiePostgres = "org.tpolecat" %% "doobie-postgres" % doobieVersion withSources () // Postgres driver 42.2.2 + type mappings.
 lazy val doobieTK       = "org.tpolecat" %% "doobie-specs2"   % doobieVersion % Test withSources () // specs2 support for typechecking statements.
+
+lazy val flyway = "org.flywaydb" % "flyway-core" % "4.2.0" withSources ()
 
 lazy val shapeless: ModuleID = "com.chuusai" %% "shapeless" % "2.3.3" withSources ()
 

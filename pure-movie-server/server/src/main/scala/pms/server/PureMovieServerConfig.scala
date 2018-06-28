@@ -10,9 +10,9 @@ import pms.config._
   *
   */
 final case class PureMovieServerConfig(
-  port: Int,
-  host: String,
-  apiRoot: String,
+  port:         Int,
+  host:         String,
+  apiRoot:      String
 )
 
 object PureMovieServerConfig extends ConfigLoader[PureMovieServerConfig] {
