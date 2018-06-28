@@ -1,16 +1,13 @@
 package pms.server
 
+import doobie.util.transactor.Transactor
 import org.http4s._
-
 import pms.effects._
 import pms.email._
-
 import pms.algebra.user._
 import pms.algebra.imdb._
 import pms.algebra.movie._
-
 import pms.algebra.http._
-
 import pms.service.user._
 import pms.service.user.rest._
 import pms.service.movie._
@@ -52,10 +49,12 @@ trait ModulePureMovieServer[F[_]]
 
 object ModulePureMovieServer {
 
-  def concurrent[F[_]](gConfig: GmailConfig)(implicit c: Concurrent[F]): ModulePureMovieServer[F] =
+  def concurrent[F[_]](gConfig: GmailConfig)(implicit c: Concurrent[F], t: Transactor[F]): ModulePureMovieServer[F] =
     new ModulePureMovieServer[F] {
       implicit override def concurrent: Concurrent[F] = c
 
       override def gmailConfig: GmailConfig = gConfig
+
+      override implicit def transactor: Transactor[F] = t
     }
 }
