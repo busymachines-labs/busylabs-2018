@@ -7,8 +7,11 @@ import pms.effects._
 import pms.algebra.imdb._
 import java.time.Year
 
-import cats.effect.IO.timer
-import cats.effect.Timer
+import net.ruippeixotog.scalascraper.model.Document
+import pms.algebra.imdb.extra.RateLimiter
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 
 /**
   *
@@ -16,12 +19,16 @@ import cats.effect.Timer
   * @since 25 Jun 2018
   *
   */
-final private[imdb] class AsyncIMDBAlgebraImpl[F[_]](
+final private[imdb] class AsyncIMDBAlgebraImpl[F[_]](val rateLimiter : RateLimiter[Document])(
   implicit val F: Async[F]
 ) extends IMDBAlgebra[F] {
 
   override def scrapeMovieByTitle(title: TitleQuery): F[Option[IMDBMovie]] = {
-    val doc = JsoupBrowser().get(s"https://imdb.com/find?q=$title&s=tt")
+    val browser = JsoupBrowser()
+    val imdbScrapeRequest = rateLimiter.addToQueue(Future{
+      browser.get(s"https://imdb.com/find?q=$title&s=tt")
+    })
+    val doc = Await.result(imdbScrapeRequest, Duration.Inf)
 
     val movie = for {
       findList <- doc tryExtract elementList(".findList tr")

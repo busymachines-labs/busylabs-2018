@@ -3,9 +3,14 @@ package pms.algebra.imdb
 import cats.effect.IO
 import java.time.Year
 
+import net.ruippeixotog.scalascraper.model.Document
+import pms.algebra.imdb.extra.RateLimiter
+import scala.concurrent.duration._
+
 class IMDBAlgebraSpec extends org.specs2.mutable.Specification {
 
-  private val imdbAlgebra = new impl.AsyncIMDBAlgebraImpl[IO]()
+  private val rateLimiter = new RateLimiter[Document](1.seconds, 1)
+  private val imdbAlgebra = new impl.AsyncIMDBAlgebraImpl[IO](rateLimiter)
 
   "Searching for" >> {
     "Inception must return ('Începutul', 2010)" >> {
@@ -31,4 +36,18 @@ class IMDBAlgebraSpec extends org.specs2.mutable.Specification {
       result.unsafeRunSync() mustEqual None
     }
   }
+
+//  "Sending 5 consecutive requests should take more than 500ms" >> {
+//    val startTime = System.currentTimeMillis()
+//    for(_ <- 0 to 4) {
+//      imdbAlgebra.scrapeMovieByTitle(TitleQuery("Inception")).unsafeRunAsync{
+//        cb : Either[Throwable, Option[IMDBMovie]] => cb match {
+//          case Right(_) => println(s"Completed after ${System.currentTimeMillis() - startTime}")
+//        }
+//      }
+//    }
+//    val elapsed = System.currentTimeMillis() - startTime
+//    println(s"Elapsed time: $elapsed")
+//    elapsed must be_>=(500L)
+//  }
 }
