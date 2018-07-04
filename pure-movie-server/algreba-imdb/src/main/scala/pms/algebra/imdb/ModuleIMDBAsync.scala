@@ -1,6 +1,8 @@
 package pms.algebra.imdb
-
+import RequestLimiter.RateLimiter
 import pms.effects._
+import scala.concurrent.duration._
+
 
 /**
   *
@@ -11,7 +13,12 @@ import pms.effects._
 trait ModuleIMDBAsync[F[_]] {
   implicit def async: Async[F]
 
+
+  def imdbConfig: IMDBAlgebraConfig
+
+  val rateLimiter = RateLimiter(imdbConfig.reqTimeLimit.millis, imdbConfig.reqNumber)
+
   def imdbAlgebra: IMDBAlgebra[F] = _imdbAlgebra
 
-  private lazy val _imdbAlgebra: IMDBAlgebra[F] = new impl.AsyncIMDBAlgebraImpl[F]()
+  private lazy val _imdbAlgebra: IMDBAlgebra[F] = new impl.AsyncIMDBAlgebraImpl[F](rateLimiter)
 }
