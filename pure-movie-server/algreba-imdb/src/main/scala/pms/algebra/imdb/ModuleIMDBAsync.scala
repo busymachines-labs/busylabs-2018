@@ -1,5 +1,6 @@
 package pms.algebra.imdb
 
+import net.ruippeixotog.scalascraper.model.Document
 import pms.effects._
 
 /**
@@ -11,7 +12,10 @@ import pms.effects._
 trait ModuleIMDBAsync[F[_]] {
   implicit def async: Async[F]
 
+  def algebraConfig: IMDBConfig
+
   def imdbAlgebra: IMDBAlgebra[F] = _imdbAlgebra
 
-  private lazy val _imdbAlgebra: IMDBAlgebra[F] = new impl.AsyncIMDBAlgebraImpl[F]()
+  private lazy val _imdbAlgebra: IMDBAlgebra[F] = new impl.AsyncIMDBAlgebraImpl[F](algebraConfig)
+
 }
