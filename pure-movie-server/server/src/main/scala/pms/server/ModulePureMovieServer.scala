@@ -30,6 +30,8 @@ trait ModulePureMovieServer[F[_]]
   //at this point we can use the same concurrent instance
   implicit override def async: Async[F] = concurrent
 
+  override def imdbConfig: IMDBAlgebraConfig
+
   override def gmailConfig: GmailConfig
 
   //we could delay this even more, but there is little point.
@@ -49,9 +51,11 @@ trait ModulePureMovieServer[F[_]]
 
 object ModulePureMovieServer {
 
-  def concurrent[F[_]](gConfig: GmailConfig)(implicit c: Concurrent[F], t: Transactor[F]): ModulePureMovieServer[F] =
+  def concurrent[F[_]](iConfig: IMDBAlgebraConfig, gConfig: GmailConfig)(implicit c: Concurrent[F], t: Transactor[F]): ModulePureMovieServer[F] =
     new ModulePureMovieServer[F] {
       implicit override def concurrent: Concurrent[F] = c
+
+      override def imdbConfig: IMDBAlgebraConfig = iConfig
 
       override def gmailConfig: GmailConfig = gConfig
 

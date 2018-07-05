@@ -22,16 +22,17 @@ final class IMDBService[F[_]] private(
   implicit F: MonadError[F, Throwable]
 ) {
 
-  def scrapeIMDBForTitle(title: TitleQuery)(implicit authCtx: AuthCtx): F[Movie] =
+  def scrapeIMDBForTitle(title: TitleQuery)(implicit authCtx: AuthCtx): F[Movie] = {
     for {
       maybe <- imdbAlgebra.scrapeMovieByTitle(title)
       //TODO: write abstract combinators
       toCreate <- maybe match {
-                   case None        => F.raiseError(InvalidInputFailure(s"Could not find imdb movie with title: $title"))
-                   case Some(value) => F.pure(imdbMovieToMovieCreation(value))
-                 }
+        case None => F.raiseError(InvalidInputFailure(s"Could not find imdb movie with title: $title"))
+        case Some(value) => F.pure(imdbMovieToMovieCreation(value))
+      }
       movie <- movieAlgebra.createMovie(toCreate)
     } yield movie
+  }
 
   /**
     * Unfortunately we only scrape the year from IMDB! :'(
