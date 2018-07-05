@@ -32,6 +32,8 @@ trait ModulePureMovieServer[F[_]]
 
   override def gmailConfig: GmailConfig
 
+  override def algebraConfig: IMDBConfig
+
   //we could delay this even more, but there is little point.
   override def authCtxMiddleware: AuthCtxMiddleware[F] =
     AuthedHttp4s.userTokenAuthMiddleware[F](userAuthAlgebra)
@@ -49,11 +51,13 @@ trait ModulePureMovieServer[F[_]]
 
 object ModulePureMovieServer {
 
-  def concurrent[F[_]](gConfig: GmailConfig)(implicit c: Concurrent[F], t: Transactor[F]): ModulePureMovieServer[F] =
+  def concurrent[F[_]](gConfig: GmailConfig, imdbConfig:IMDBConfig)(implicit c: Concurrent[F], t: Transactor[F]): ModulePureMovieServer[F] =
     new ModulePureMovieServer[F] {
       implicit override def concurrent: Concurrent[F] = c
 
       override def gmailConfig: GmailConfig = gConfig
+
+      override def algebraConfig:IMDBConfig = imdbConfig
 
       override implicit def transactor: Transactor[F] = t
     }
