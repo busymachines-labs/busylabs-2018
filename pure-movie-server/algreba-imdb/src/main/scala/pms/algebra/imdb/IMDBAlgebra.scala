@@ -9,3 +9,5 @@ package pms.algebra.imdb
 trait IMDBAlgebra[F[_]] {
   def scrapeMovieByTitle(title: TitleQuery): F[Option[IMDBMovie]]
 }
+
+
