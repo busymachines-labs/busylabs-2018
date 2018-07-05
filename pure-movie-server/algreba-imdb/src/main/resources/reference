@@ -1,0 +1,6 @@
+pms {
+  algebra{
+    duration-interval = 100
+    max-requests = 1
+  }
+}

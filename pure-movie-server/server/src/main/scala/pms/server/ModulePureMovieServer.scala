@@ -49,11 +49,13 @@ trait ModulePureMovieServer[F[_]]
 
 object ModulePureMovieServer {
 
-  def concurrent[F[_]](gConfig: GmailConfig)(implicit c: Concurrent[F], t: Transactor[F]): ModulePureMovieServer[F] =
+  def concurrent[F[_]](gConfig: GmailConfig, iConfig: IMDBConfig)(implicit c: Concurrent[F], t: Transactor[F]): ModulePureMovieServer[F] =
     new ModulePureMovieServer[F] {
       implicit override def concurrent: Concurrent[F] = c
 
       override def gmailConfig: GmailConfig = gConfig
+
+      override def imdbConfig: IMDBConfig = iConfig
 
       override implicit def transactor: Transactor[F] = t
     }

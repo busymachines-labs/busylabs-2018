@@ -22,6 +22,8 @@ final class IMDBService[F[_]] private(
   implicit F: MonadError[F, Throwable]
 ) {
 
+
+
   def scrapeIMDBForTitle(title: TitleQuery)(implicit authCtx: AuthCtx): F[Movie] =
     for {
       maybe <- imdbAlgebra.scrapeMovieByTitle(title)

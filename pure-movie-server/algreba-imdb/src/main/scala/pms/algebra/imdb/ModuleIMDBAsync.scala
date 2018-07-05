@@ -13,5 +13,7 @@ trait ModuleIMDBAsync[F[_]] {
 
   def imdbAlgebra: IMDBAlgebra[F] = _imdbAlgebra
 
-  private lazy val _imdbAlgebra: IMDBAlgebra[F] = new impl.AsyncIMDBAlgebraImpl[F]()
+  def imdbConfig: IMDBConfig
+
+  private lazy val _imdbAlgebra: IMDBAlgebra[F] = new impl.AsyncIMDBAlgebraImpl[F](imdbConfig)
 }

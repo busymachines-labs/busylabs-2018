@@ -204,6 +204,9 @@ lazy val `pms-effects` = project
 
 def commonSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.6",
+  libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "2.1.0",
+  libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5",
+  libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test",
   libraryDependencies ++= Seq(
     //utils
     bmcCore,
@@ -469,7 +472,7 @@ lazy val javaxMail = "com.sun.mail" % "javax.mail" % "1.6.1" withSources ()
 //============================================================================================
 
 //https://github.com/ruippeixotog/scala-scraper
-lazy val scalaScrapper = "net.ruippeixotog" %% "scala-scraper" % "2.1.0" withSources ()
+
 
 //============================================================================================
 //=========================================  testing =========================================
