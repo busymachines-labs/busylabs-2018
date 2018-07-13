@@ -1,13 +1,12 @@
 package pms.server
 
 import cats.implicits._
-
 import pms.effects._
 import pms.email._
 import pms.db.config._
-
 import io.chrisdavenport.log4cats.slf4j.Slf4jLogger
 import doobie.util.transactor.Transactor
+import pms.algebra.imdb.IMDBAlgebraConfig
 
 /**
   *
@@ -23,20 +22,22 @@ final class PureMovieServer[F[_]: Concurrent] private () {
     for {
       serverConfig <- PureMovieServerConfig.default[F]
       gmailConfig  <- GmailConfig.default[F]
+      imdbAlgebraConfig <- IMDBAlgebraConfig.default[F]
       dbConfig     <- DatabaseConfig.default[F]
       transactor   <- DatabaseConfigAlgebra.transactor[F](dbConfig)
       nrOfMigs     <- DatabaseConfigAlgebra.initializeSQLDb[F](dbConfig)
       _            <- logger.info(s"Successfully ran #$nrOfMigs migrations")
-      pmsModule    <- moduleInit(gmailConfig, transactor)
+      pmsModule    <- moduleInit(gmailConfig, imdbAlgebraConfig, transactor)
       _            <- logger.info(s"Successfully initialized pure-movie-server")
     } yield (serverConfig, pmsModule)
   }
 
   private def moduleInit(
     gmailConfig: GmailConfig,
+    imdblgebraConfig: IMDBAlgebraConfig,
     transactor:  Transactor[F]
   ): F[ModulePureMovieServer[F]] =
-    Concurrent.apply[F].delay(ModulePureMovieServer.concurrent(gmailConfig)(implicitly, transactor))
+    Concurrent.apply[F].delay(ModulePureMovieServer.concurrent(gmailConfig, imdblgebraConfig)(implicitly, transactor))
 
 }
 
