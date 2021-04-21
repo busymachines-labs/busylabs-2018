@@ -1,6 +1,6 @@
 ## Tooling
 
-See [./lab_01/README.md](./lab_01/README.md) for a rundown of minimal tooling. This section here contains some cool extra stuff.
+See [./labs/lab_01/README.md](./labs/lab_01/README.md) for a rundown of minimal tooling. This section here contains some cool extra stuff.
 
 ### IntelliJ
 
